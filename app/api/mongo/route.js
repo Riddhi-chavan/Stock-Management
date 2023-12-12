@@ -8,8 +8,8 @@ export async function GET(request) {
   try {
     await client.connect();
 
-    const database = client.db('productDB');
-    const salesCollection = database.collection('products');
+    const database = client.db('stock');
+    const salesCollection = database.collection('inventory');
 
     const query = {};
     const document = await salesCollection.findOne(query);
