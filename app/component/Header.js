@@ -1,19 +1,24 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useState , useEffect } from 'react'
 import Addtocart from './Addtocart'
 
 
 const Header =   () => {
   const [showcart , setshowcart] =  useState(false);
 
+
+
+ 
+
   const handleclose = () => {
     setshowcart(false)
   }
+  
 
   return (
    <>
-     <Addtocart  onClose={handleclose} visible={showcart}/>
-   <header className="text-gray-600 body-font">
+     <Addtocart  onClose={handleclose} visible={showcart}   />
+   <header className="text-gray-600  body-font">
   <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
     <a className="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" className="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full" viewBox="0 0 24 24">

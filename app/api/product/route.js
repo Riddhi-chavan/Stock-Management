@@ -35,7 +35,7 @@ export async function POST(request) {
 
     const product = await inventory.insertOne(body);
 
-    console.log(product);
+    console.log(  "this is product",product);
     return NextResponse.json({ product, ok: true });
   } finally {
     await client.close();

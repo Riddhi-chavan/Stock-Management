@@ -2,12 +2,16 @@
 import React from 'react'
 import { useState } from 'react';
 
-const Addtocart = ({ visible, onClose }) => {
+const Addtocart = ({ visible, onClose , fetchProducts }) => {
   if (!visible) return null;
+  const handleReload = () => {
+    // Reload the page
+    window.location.reload();
+  };
 
+  
   const [alert, setalert] = useState("");
   const [productForm, setProductFrom] = useState({});
-
 
   const addProduct = async () => {
 
@@ -24,6 +28,7 @@ const Addtocart = ({ visible, onClose }) => {
         console.log('Product added successfully');
         setalert("Your product is added ");
         setProductFrom({})
+        fetchProducts();
       } else {
         console.error('Failed to add product');
       }
@@ -35,14 +40,24 @@ const Addtocart = ({ visible, onClose }) => {
   const handlechange = (e) => {
     setProductFrom({ ...productForm, [e.target.name]: e.target.value })
   }
+  
+  const handleclick = () => {
+    addProduct();
+    
+    setTimeout(() => {
+      // Reload the page after displaying the alert for a certain duration (e.g., 2000 milliseconds or 2 seconds)
+      handleReload();
+    }, 3000); 
+  }
+  
   return (
-    <div className="container mx-auto pt-22 fixed inset-0  bg-opacity-30  backdrop-blur-sm z-50  pt-32">
+    <div className="container mx-auto pt-22 fixed inset-0   bg-opacity-30  backdrop-blur-sm z-50  pt-32">
       {alert && (
         <div className="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
           {alert}
         </div>
       )}
-      <div className="md:max-w-xl max-w-md mx-auto p-8 shadow-md rounded-md bg-gray-300 relative">
+      <div className="md:max-w-xl  max-w-sm mx-4 md:mx-auto p-8 shadow-md rounded-md bg-gray-300 relative">
         <button onClick={onClose} className=' absolute top-0 mt-2 right-2 text-gray-600 hover:text-gray-800 focus:outline-none '>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
@@ -93,7 +108,7 @@ const Addtocart = ({ visible, onClose }) => {
         </div>
 
         <button
-          onClick={addProduct}
+          onClick={handleclick}
           className="bg-[#6366F1] text-white p-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
         >
           Add Prouct

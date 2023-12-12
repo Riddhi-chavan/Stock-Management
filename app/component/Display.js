@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from 'react';
 
 
+
 export default function Home() {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
 
@@ -26,6 +27,7 @@ const handleAction = async (action, slug) => {
       },
       body: JSON.stringify({ action, slug }),
     });
+    handleReload();
 
     if (!response.ok) {
       // Handle non-successful responses
@@ -34,6 +36,7 @@ const handleAction = async (action, slug) => {
     }
 
     const result = await response.json();
+
 
     // Check if the response is an object
     if (result && typeof result === "object") {
@@ -47,6 +50,9 @@ const handleAction = async (action, slug) => {
   }
 };
 
+const handleReload = () => {
+  window.location.reload();
+};
 
   const showDropdown = () => {
     setDropdownVisible(true);
@@ -57,7 +63,7 @@ const handleAction = async (action, slug) => {
     inputRef.current.value = '';
     setDropdown([]);
   };
-
+ 
   const fetchProducts = async () => {
     try {
       const response = await fetch('/api/product');
@@ -70,9 +76,11 @@ const handleAction = async (action, slug) => {
 
       const rjson = await response.json();
 
+
       // Check if the response contains the expected property (e.g., 'products')
       if (rjson && rjson.products) {
         setProducts(rjson.products);
+        console.log(rjson.products);
       } else {
         console.error('Unexpected response format:', rjson);
       }
@@ -142,20 +150,24 @@ const handleAction = async (action, slug) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ action, slug, initialquantity }),
-    })
+    } )
+   
     // let r = await response.json()
     console.log(response);
     setleadingAction(false);
+    handleReload();
   }
+  
+
 
   return (
     <>
 
 
-      <div className="container  mt-8">
+      <div className="container  m-auto  mt-8">
         <div>
-          <div className="relative md:ml-12 mx-2">
-            <div className={` p-4 rounded-full shadow-xl flex items-center w-full md:w-2/6 h-10 border-black border-x-2 border-y-2 relative ${isDropdownVisible ? 'border-blue-500 bg-white' : ''}`}>
+          <div className="relative md:ml-12  mx-2 ">
+            <div className={` p-4 rounded-full shadow-xl flex items-center max-w-full md:w-3/6 h-10 border-black border-x-2 border-y-2   w-full relative ${isDropdownVisible ? 'border-blue-500 bg-white' : ''}`}>
               <svg className="h-2 w-5 text-gray-400 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                 <path d="M14.742 13.32a8.5 8.5 0 1 0-1.415 1.415l4.942 4.941a1 1 0 0 0 1.415-1.415l-4.942-4.941zM16 8.5a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0z" />
               </svg>
@@ -208,9 +220,9 @@ const handleAction = async (action, slug) => {
               )}
             </div>
             <div className={`container mx-auto mt-8 ${dropdown.length > 0 && isDropdownVisible ? ' mt-32' : ''}`}>
-              <h1 className={`text-2xl font-semibold mb-4 text-center bg-[#6366F1] text-white p-4 max-w- rounded-md mt-10  h-16 w-full ${!selectedProduct ? 'mb-4' : ''} ${dropdown.length > 0 && isDropdownVisible ? ' mt-32' : ''} `} >Display Current Stock
+              <h1 className={`text-2xl font-semibold mb-4 text-center bg-[#6366F1] text-white p-4 max-w- rounded-md mt-10  h-16 w-full xl: ${!selectedProduct ? 'mb-4' : ''} ${dropdown.length > 0 && isDropdownVisible ? ' mt-32' : ''} `} >Display Current Stock
               </h1>
-              <div className='flex'>
+              <div className='flex '>
                 {selectedProduct && (
                   <button onClick={resetSelectedProduct} className="text-blue-500 mt-28  pb-4 absolute top-12 right-2  ">
                     <a href="#_" className="relative inline-flex items-center justify-center p-2 px-6 py-1 overflow-hidden font-medium text-indigo-600 transition duration-300 ease-out border-2 border-purple-500 rounded-full shadow-md group w-60">
@@ -256,7 +268,7 @@ const handleAction = async (action, slug) => {
                                 {edit ? (
 
                                   <div className="flex items-center space-x-3 ">
-                                    <button onClick={() => { buttonAciton("minus", item.slug, item.quantity) }} disabled={loadingAction} className="inline-flex items-center justify-center p-1 text-sm font-medium h-6 w-6 text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700 disabled:bg-[#dedcce]" type="button">
+                                    <button onClick={() => { buttonAciton("minus", item.slug, item.quantity) }} disabled={loadingAction}  className="inline-flex items-center justify-center p-1 text-sm font-medium h-6 w-6 text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700 disabled:bg-[#dedcce]" type="button">
                                       <span className="sr-only">Quantity button</span>
                                       <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
                                         <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h16" />
@@ -296,7 +308,7 @@ const handleAction = async (action, slug) => {
                                   </a>
                                 </td>
                               )}
-                              <td className="px-6 py-4 text-right" onClick={() => editproducts()}>
+                              <td className="px-6 py-4 text-right" onClick={() => editproducts() }>
                                 <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
                                   Edit
                                 </a>
